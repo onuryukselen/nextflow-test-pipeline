@@ -2,6 +2,7 @@
 nextflow.enable.dsl=2
 
 process FETCH_DATA {
+    output: val('done')
     script:
     """
     echo "FETCH_DATA: starting at \$(date)"
@@ -11,6 +12,7 @@ process FETCH_DATA {
 }
 
 process ALIGN {
+    output: val('done')
     script:
     """
     echo "ALIGN: starting at \$(date)"
@@ -21,6 +23,7 @@ process ALIGN {
 
 process SORT_BAM {
     input: val(x)
+    output: val('done')
     script:
     """
     echo "SORT_BAM: starting at \$(date)"
@@ -31,6 +34,7 @@ process SORT_BAM {
 
 process CALL_VARIANTS {
     input: val(x)
+    output: val('done')
     script:
     """
     echo "CALL_VARIANTS: starting at \$(date)"
@@ -52,7 +56,7 @@ process QC_REPORT {
 workflow {
     fetch = FETCH_DATA()
     align = ALIGN()
-    sort  = SORT_BAM(align.out.ifEmpty('done'))
-    vars  = CALL_VARIANTS(sort.out.ifEmpty('done'))
-    QC_REPORT(vars.out.ifEmpty('done'))
+    sort  = SORT_BAM(align.out)
+    vars  = CALL_VARIANTS(sort.out)
+    QC_REPORT(vars.out)
 }
