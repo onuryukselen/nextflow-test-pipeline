@@ -1,6 +1,9 @@
 #!/usr/bin/env nextflow
 nextflow.enable.dsl=2
 
+params.trigger_error = false
+params.trigger_error_ignore = false
+
 process FETCH_DATA {
     output: val('done')
     script:
@@ -27,10 +30,10 @@ process SORT_BAM {
     output: val('done')
     script:
     """
-    if "${params.trigger_error_ignore}" == "true" {
+    if [ "${params.trigger_error_ignore}" = "true" ]; then
         echo "SORT_BAM: Simulating an error at \$(date)"
         exit 1
-    }
+    fi
     echo "SORT_BAM: starting at \$(date)"
     sleep 60
     echo "SORT_BAM: done"
@@ -42,10 +45,10 @@ process CALL_VARIANTS {
     output: val('done')
     script:
     """
-    if "${params.trigger_error}" == "true" {
+    if [ "${params.trigger_error}" = "true" ]; then
         echo "CALL_VARIANTS: Simulating an error at \$(date)"
         exit 1
-    }
+    fi
     echo "CALL_VARIANTS: starting at \$(date)"
     sleep 60
     echo "CALL_VARIANTS: done"
