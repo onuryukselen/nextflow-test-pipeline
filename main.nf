@@ -66,9 +66,9 @@ process QC_REPORT {
 }
 
 workflow {
-    fetch = FETCH_DATA()
-    align = ALIGN()
-    sort  = SORT_BAM(align.out)
-    vars  = CALL_VARIANTS(sort.out)
-    QC_REPORT(vars.out)
+    FETCH_DATA()
+    ALIGN()
+    SORT_BAM(ALIGN.out)
+    CALL_VARIANTS(SORT_BAM.out)
+    QC_REPORT(CALL_VARIANTS.out)
 }
