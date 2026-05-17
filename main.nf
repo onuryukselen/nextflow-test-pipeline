@@ -27,7 +27,7 @@ process SORT_BAM {
     output: val('done')
     script:
     """
-    if "{params.trigger_error_ignore}" == "true" {
+    if "${params.trigger_error_ignore}" == "true" {
         echo "SORT_BAM: Simulating an error at \$(date)"
         exit 1
     }
@@ -42,7 +42,7 @@ process CALL_VARIANTS {
     output: val('done')
     script:
     """
-    if "{params.trigger_error}" == "true" {
+    if "${params.trigger_error}" == "true" {
         echo "CALL_VARIANTS: Simulating an error at \$(date)"
         exit 1
     }
