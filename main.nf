@@ -22,10 +22,15 @@ process ALIGN {
 }
 
 process SORT_BAM {
+    errorStrategy 'ignore'
     input: val(x)
     output: val('done')
     script:
     """
+    if "{params.trigger_error_ignore}" == "true" {
+        echo "SORT_BAM: Simulating an error at \$(date)"
+        exit 1
+    }
     echo "SORT_BAM: starting at \$(date)"
     sleep 60
     echo "SORT_BAM: done"
@@ -37,6 +42,10 @@ process CALL_VARIANTS {
     output: val('done')
     script:
     """
+    if "{params.trigger_error}" == "true" {
+        echo "CALL_VARIANTS: Simulating an error at \$(date)"
+        exit 1
+    }
     echo "CALL_VARIANTS: starting at \$(date)"
     sleep 60
     echo "CALL_VARIANTS: done"
